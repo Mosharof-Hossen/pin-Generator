@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="formControl" class="form-control" type="text" value="0">
+                    <button id = "generateBtn" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="display" class="form-control" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button">7</div>
+                              <div class="button">8</div>
+                              <div class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button">4</div>
+                              <div class="button">5</div>
+                              <div class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button">1</div>
+                              <div class="button">2</div>
+                              <div class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button"><</div>
+                                <div class="button">0</div>
+                                <div class="button">C</div>
+                            </div>
+                            <div>
+                                <button  type="submit" id="submitBtn" class="submit-btn">Submit</button>
+                                <p class="action-left"><span id="counting">3</span> try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p id="notVerified" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="verified" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+    <script>
+        let generateBtn = document.getElementById("generateBtn")
+        generateBtn.addEventListener("click",(event) => {
+            let randomNumber = Math.round(Math.random()*(9999-1000)+1000)
+            document.getElementById("formControl").value = randomNumber
+            document.getElementById("formControl").style.color = "rgb(241, 159, 7)"
+            document.getElementById("formControl").style.fontWeight = "bold"
+        })
+        let buttonText = document.getElementsByClassName("button")
+        let screen = document.getElementById("display")
+        for (item of buttonText){
+            item.addEventListener("click",(event)=>{
+                buttonText = event.target.innerText;
+                if(buttonText == "C"){
+                    screen.value = "";
+                }
+                else if(buttonText == "<"){
+                    let value = screen.value
+                    screen.value = value.replace(value.slice(-1),"")
+                    console.log(screen.value);
+                }
+                else{
+                    screen.value += buttonText
+                }   
+            })
+            abc()
+        }
+        
+        function abc(){
+            let submitBtn = document.getElementById("submitBtn")
+        let count = 3
+            submitBtn.addEventListener("click",(event)=>{
+            console.log("Clicked");
+            let generator = screen.value
+            let pinNumber = document.getElementById("formControl").value
+            if(generator == pinNumber){
+                document.getElementById("verified").style.display = "block"
+                document.getElementById("notVerified").style.display = "none"
+                }else{
+                document.getElementById("notVerified").style.display = "block"
+                document.getElementById("verified").style.display = "none"
+                count--
+                document.getElementById("counting").innerText = count
+                if(count==0){
+                    document.getElementById("submitBtn").disabled = true;
+                }
+            
+            }
+        })
+        }
+        
+    </script>
+</body>
+</html>
